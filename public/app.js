@@ -2,20 +2,55 @@
  * front-end
  * ==================== */
 
+
 var card = null;
 
  //FROM THE DEMO EXAMPLE
 $(document).ready(function () {
+
+  $("#search").click(function () {
+    var city = $("#textInput").val().trim();
+    var key = apiKey.MY_KEY
+    var url = "https://api.openweathermap.org/data/2.5/forecast";
+
+    $.ajax({
+      url: url, //API Call
+      dataType: "json",
+      type: "GET",
+      data: {
+        q: city,
+        appid: key,
+        units: "metric",
+        cnt: "5"
+      },
+      success: function (result) {
+        console.log(result);
+        var name = result.city.name + ", " + result.city.country;
+
+        console.log(name);
+      }
+    })//ajax
+
+
+
+
+  })//#search
+
+
+
+
+
+
   $("#reset").click(function (e) {
   location.reload();
   });
   $("#submitButton").click(function (e) {
   $.ajax({
   type: "POST",
-  url: "http://api.openweathermap.org/data/2.5/group?id=2643741,2644688,2633352,2654675,2988507,2990969,2911298,2925535,2950159,3120501,3128760,5128581,4140963,4930956,5106834,5391959,5368361,5809844,4099974,4440906&appid=f2b663f87d90b05cb69186a4010d9b4c&units=metric",
+  url: "http://api.openweathermap.org/data/2.5/group?id=2643741,2644688,2633352,2654675,2988507,2990969,2911298,2925535,2950159,3120501,3128760,5128581,4140963,4930956,5106834,5391959,5368361,5809844,4099974,4440906&appid="+apiKey.MY_KEY+"&units=metric",
   dataType: "json",
   success: function (result, status, xhr) {
-  res = CreateWeatherJson(result);
+ // res = CreateWeatherJson(result);
  // console.log("result ", result);
  // console.log("result list", result.list);
  // console.log("result List.length ", result.list.length);
@@ -24,67 +59,32 @@ $(document).ready(function () {
     //console.log(result.list[i]);
     // console.log("=============================================");
     // console.log("City: "+result.list[i].name+", "+result.list[i].sys.country);
+    var name = "City: "+result.list[i].name+", "+result.list[i].sys.country;
     // console.log("Current Condition: "+result.list[i].weather[0].description);
+    var curr = "Current Condition: "+result.list[i].weather[0].description;
     // console.log("Tempeature (c): "+result.list[i].main.temp);
+    var tempcond = "Tempeature (c): "+result.list[i].main.temp;
     // console.log("Pressure (mbar) "+result.list[i].main.pressure);
+    var press = "Pressure (mbar) "+result.list[i].main.pressure;
     // console.log("Humidity "+result.list[i].main.humidity+"%");
+    var humid = "Humidity "+result.list[i].main.humidity+"%";
     // console.log("Wind speed: "+result.list[i].wind.speed+" At "+result.list[i].wind.deg+" Gusting "+result.list[i].wind.gust);
+    var windcond = "Wind speed: "+result.list[i].wind.speed+" At "+result.list[i].wind.deg+" Gusting "+result.list[i].wind.gust
 
     if(result.list[i].wind.gust === undefined) {
-      card = `<div class="card" style="width: 22rem;"><div class="card-body"><h5 class="card-title">${"City: "+result.list[i].name+", "+result.list[i].sys.country}</h5><h6 class="card-subtitle mb-2 text-muted">${"Current Condition: "+result.list[i].weather[0].description}</h6><p class="card-text">${"Tempeature (c): "+result.list[i].main.temp}</p><p class="card-text">${"Pressure (mbar) "+result.list[i].main.pressure}</p><p class="card-text">${"Humidity "+result.list[i].main.humidity+"%"}</p><p class="card-text">${"Wind speed: "+result.list[i].wind.speed+" At "+result.list[i].wind.deg}</p></div></div>`
+      var windcond = "Wind speed: "+result.list[i].wind.speed+" At "+result.list[i].wind.deg
     }
-    else {
-      card = `<div class="card" style="width: 22rem;"><div class="card-body"><h5 class="card-title">${"City: "+result.list[i].name+", "+result.list[i].sys.country}</h5><h6 class="card-subtitle mb-2 text-muted">${"Current Condition: "+result.list[i].weather[0].description}</h6><p class="card-text">${"Tempeature (c): "+result.list[i].main.temp}</p><p class="card-text">${"Pressure (mbar) "+result.list[i].main.pressure}</p><p class="card-text">${"Humidity "+result.list[i].main.humidity+"%"}</p><p class="card-text">${"Wind speed: "+result.list[i].wind.speed+" At "+result.list[i].wind.deg+" Gusting "+result.list[i].wind.gust}</p></div></div>`
-    }
+    
+
+    card = `<div class="card" style="width: 22rem;"><div class="card-body"><h5 class="card-title">${name}</h5><h6 class="card-subtitle mb-2 text-muted">${curr}</h6><p class="card-text">${tempcond}</p><p class="card-text">${press}</p><p class="card-text">${humid}</p><p class="card-text">${windcond}</p></div></div>`
+
     $("#target").prepend(card);
   }// for loop
+}//success
+  });//ajax
+})//submit button
 
-
-
-
-  // $("#weatherTable").append("<thead><tr><th>City Id</th><th>City Name</th><th>Temperature</th><th>Min Temp</th><th>Max Temp</th><th>Humidity</th><th>Pressure</th></thead></table>");
-  // $('#weatherTable').DataTable({
-  // data: JSON.parse(res),
-  // columns: [
-  // { data: 'cityId' },
-  // { data: 'cityName' },
-  // { data: 'temp' },
-  // { data: 'tempMin' },
-  // { data: 'tempMax' },
-  // { data: 'pressure' },
-  // { data: 'humidity' }
-  // ],
-  // "pageLength": 5
-  // });
-  },
-  error: function (xhr, status, error) {
-  console.log("Error: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
-  }
-  });
-  });
-  function CreateWeatherJson(json) {
-  var newJson = "";
-  for (i = 0; i < json.list.length; i++) {
-  cityId = json.list[i].id;
-  cityName = json.list[i].name;
-  temp = json.list[i].main.temp
-  pressure = json.list[i].main.pressure
-  humidity = json.list[i].main.humidity
-  tempmin = json.list[i].main.temp_min
-  tempmax = json.list[i].main.temp_max
-  newJson = newJson + "{";
-  newJson = newJson + "\"cityId\"" + ": " + cityId + ","
-  newJson = newJson + "\"cityName\"" + ": " + "\"" + cityName + "\"" + ","
-  newJson = newJson + "\"temp\"" + ": " + temp + ","
-  newJson = newJson + "\"pressure\"" + ": " + pressure + ","
-  newJson = newJson + "\"humidity\"" + ": " + humidity + ","
-  newJson = newJson + "\"tempMin\"" + ": " + tempmin + ","
-  newJson = newJson + "\"tempMax\"" + ": " + tempmax
-  newJson = newJson + "},";
-  }
-  return "[" + newJson.slice(0, newJson.length - 1) + "]"
-  }
-  });
+  }); //document.ready function
 
 
 
