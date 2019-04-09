@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>NoteTaker</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+<!-- <link rel="stylesheet" href="style.css"> -->
+<title>Weather API Demo App</title>
     <style media="screen">
       body {
         text-align: center;
@@ -57,7 +61,15 @@
     </style>
   </head>
   <body>
-    <h1>Mongo Note App</h1>
+    <h1>Weather API App</h1>
+    <br />
+    <button id="submitButton">Call API</button>
+    <br />
+
+    <div id="weatherTable"></div>
+
+
+
     <div id="user-input">
         <p>Title</p>
         <input type="text" id="title" />
@@ -73,6 +85,12 @@
     </div>
 
     <div id="results"></div>
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

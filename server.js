@@ -21,7 +21,7 @@ app.use(express.static("public"));
 
 // Database configuration
 var databaseUrl = "WeatherAPI";
-var collections = ["notes"];
+var collections = ["collections"];
 
 // Hook mongojs config to db variable
 var db = mongojs(databaseUrl, collections);
@@ -42,8 +42,8 @@ app.get("/", function(req, res) {
 // Handle form submission, save submission to mongo
 app.post("/submit", function(req, res) {
   console.log(req.body);
-  // Insert the note into the notes collection
-  db.notes.insert(req.body, function(error, saved) {
+  // Insert the note into the collections collection
+  db.collections.insert(req.body, function(error, saved) {
     // Log any errors
     if (error) {
       console.log(error);
@@ -58,14 +58,14 @@ app.post("/submit", function(req, res) {
 
 // Retrieve results from mongo
 app.get("/all", function(req, res) {
-  // Find all notes in the notes collection
-  db.notes.find({}, function(error, found) {
+  // Find all collections in the collections collection
+  db.collections.find({}, function(error, found) {
     // Log any errors
     if (error) {
       console.log(error);
     }
     else {
-      // Otherwise, send json of the notes back to user
+      // Otherwise, send json of the collections back to user
       // This will fire off the success function of the ajax request
       res.json(found);
     }
@@ -77,8 +77,8 @@ app.get("/find/:id", function(req, res) {
   // When searching by an id, the id needs to be passed in
   // as (mongojs.ObjectId(IdYouWantToFind))
 
-  // Find just one result in the notes collection
-  db.notes.findOne(
+  // Find just one result in the collections collection
+  db.collections.findOne(
     {
       // Using the id in the url
       _id: mongojs.ObjectId(req.params.id)
@@ -105,7 +105,7 @@ app.post("/update/:id", function(req, res) {
   // as (mongojs.ObjectId(IdYouWantToFind))
 
   // Update the note that matches the object id
-  db.notes.update(
+  db.collections.update(
     {
       _id: mongojs.ObjectId(req.params.id)
     },
@@ -137,7 +137,7 @@ app.post("/update/:id", function(req, res) {
 // Delete One from the DB
 app.get("/delete/:id", function(req, res) {
   // Remove a note using the objectID
-  db.notes.remove(
+  db.collections.remove(
     {
       _id: mongojs.ObjectID(req.params.id)
     },
@@ -159,8 +159,8 @@ app.get("/delete/:id", function(req, res) {
 
 // Clear the DB
 app.get("/clearall", function(req, res) {
-  // Remove every note from the notes collection
-  db.notes.remove({}, function(error, response) {
+  // Remove every note from the collections collection
+  db.collections.remove({}, function(error, response) {
     // Log any errors to the console
     if (error) {
       console.log(error);
