@@ -2,7 +2,7 @@
  * front-end
  * ==================== */
 
-
+var card = null;
 
  //FROM THE DEMO EXAMPLE
 $(document).ready(function () {
@@ -16,9 +16,32 @@ $(document).ready(function () {
   dataType: "json",
   success: function (result, status, xhr) {
   res = CreateWeatherJson(result);
-  console.log("result ", result);
-  console.log("result list", result.list);
-  console.log("result List.length ", result.list.length);
+ // console.log("result ", result);
+ // console.log("result list", result.list);
+ // console.log("result List.length ", result.list.length);
+
+  for (var i=0; i<result.list.length; i++) {
+    //console.log(result.list[i]);
+    // console.log("=============================================");
+    // console.log("City: "+result.list[i].name+", "+result.list[i].sys.country);
+    // console.log("Current Condition: "+result.list[i].weather[0].description);
+    // console.log("Tempeature (c): "+result.list[i].main.temp);
+    // console.log("Pressure (mbar) "+result.list[i].main.pressure);
+    // console.log("Humidity "+result.list[i].main.humidity+"%");
+    // console.log("Wind speed: "+result.list[i].wind.speed+" At "+result.list[i].wind.deg+" Gusting "+result.list[i].wind.gust);
+
+    if(result.list[i].wind.gust === undefined) {
+      card = `<div class="card" style="width: 22rem;"><div class="card-body"><h5 class="card-title">${"City: "+result.list[i].name+", "+result.list[i].sys.country}</h5><h6 class="card-subtitle mb-2 text-muted">${"Current Condition: "+result.list[i].weather[0].description}</h6><p class="card-text">${"Tempeature (c): "+result.list[i].main.temp}</p><p class="card-text">${"Pressure (mbar) "+result.list[i].main.pressure}</p><p class="card-text">${"Humidity "+result.list[i].main.humidity+"%"}</p><p class="card-text">${"Wind speed: "+result.list[i].wind.speed+" At "+result.list[i].wind.deg}</p></div></div>`
+    }
+    else {
+      card = `<div class="card" style="width: 22rem;"><div class="card-body"><h5 class="card-title">${"City: "+result.list[i].name+", "+result.list[i].sys.country}</h5><h6 class="card-subtitle mb-2 text-muted">${"Current Condition: "+result.list[i].weather[0].description}</h6><p class="card-text">${"Tempeature (c): "+result.list[i].main.temp}</p><p class="card-text">${"Pressure (mbar) "+result.list[i].main.pressure}</p><p class="card-text">${"Humidity "+result.list[i].main.humidity+"%"}</p><p class="card-text">${"Wind speed: "+result.list[i].wind.speed+" At "+result.list[i].wind.deg+" Gusting "+result.list[i].wind.gust}</p></div></div>`
+    }
+    $("#target").prepend(card);
+  }// for loop
+
+
+
+
   // $("#weatherTable").append("<thead><tr><th>City Id</th><th>City Name</th><th>Temperature</th><th>Min Temp</th><th>Max Temp</th><th>Humidity</th><th>Pressure</th></thead></table>");
   // $('#weatherTable').DataTable({
   // data: JSON.parse(res),
