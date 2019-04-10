@@ -8,7 +8,7 @@ var card = null;
  //FROM THE DEMO EXAMPLE
 $(document).ready(function () {
 
-  $("#search").click(function () {
+  $("#3search").click(function () {
     var city = $("#textInput").val().trim();
     var key = apiKey.MY_KEY
     var url = "https://api.openweathermap.org/data/2.5/forecast";
@@ -21,23 +21,93 @@ $(document).ready(function () {
         q: city,
         appid: key,
         units: "metric",
-        cnt: "5"
+        cnt: "10"
       },
       success: function (result) {
-        console.log(result);
+        $("#hourTitle").empty();
+        $("#hourTitle").html("Forcast by Three Hour Intervals");
+        $("#threeHour-target").empty();
+       // console.log(result);
         var name = result.city.name + ", " + result.city.country;
 
-        console.log(name);
+        for (var i=0; i<result.list.length; i++) {
+          //console.log(result.list[i].dt_txt);
+          var a = result.list[i].dt_txt.split(' ');
+          var t = a[1].split(":");
+          var b = a[0].split("-");
+          var displayDate = b[1] + "/" + b[2] + "/" + b[0];
+          var displayTime = t[0] + ":" + t[1];
+          var disTemp = "Temperature (c): "+result.list[i].main.temp;
+          var disPress = "Pressure (mbar): "+result.list[i].main.pressure;
+          var disCond = result.list[i].weather[0].description;
+          var disHumid = "Humidity: "+result.list[i].main.humidity+"%";
+          var windCond = "Wind Speed: "+result.list[i].wind.speed +" at "+result.list[i].wind.deg;
+
+         // console.log(result.list[i]);
+         card = `<div class="card" style="width: 22rem;"><div class="card-body"><h5 class="card-title">${name}</h5><h6 class="card-subtitle mb-2 text-muted">${displayDate + " " + displayTime}</h6><p class="card-text">${disCond}</p><p class="card-text">${disTemp}</p><p class="card-text">${disPress}</p><p class="card-text">${disHumid}</p><p class="card-text">${windCond}</p></div></div>`
+    $("#threeHour-target").append(card);
+        }//for
       }
     })//ajax
+  })//#3search
 
 
+  // $("#16search").click(function () {
+  //   var city = $("#textInput").val().trim();
+  //   var key = apiKey.MY_KEY
+  //   var url = "https://api.openweathermap.org/data/2.5/forecast/daily";
 
+  //   $.ajax({
+  //     url: url, //API Call
+  //     dataType: "json",
+  //     type: "GET",
+  //     data: {
+  //       q: city,
+  //       appid: key,
+  //       units: "metric",
+  //       cnt: "16"
+  //     },
+  //     success: function (result) {
+  //       $("#hourTitle").empty();
+  //       $("#hourTitle").html("Forcast by Three Hour Intervals");
+  //       $("#threeHour-target").empty();
+  //       console.log(result);
+  //       var name = result.city.name + ", " + result.city.country;
 
-  })//#search
+  //        // console.log(result.list[i]);
+  //       // card = `<div class="card" style="width: 22rem;"><div class="card-body"><h5 class="card-title">${name}</h5><h6 class="card-subtitle mb-2 text-muted">${displayDate + " " + displayTime}</h6><p class="card-text">${disCond}</p><p class="card-text">${disTemp}</p><p class="card-text">${disPress}</p><p class="card-text">${disHumid}</p><p class="card-text">${windCond}</p></div></div>`
+  //  // $("#threeHour-target").append(card);
+  //       }//for
+  //     }
+  //   })//ajax
+  // })//#16search
 
+  $("#mapSearch").click(function () {
+    var city = $("#textInput").val().trim();
+    var key = apiKey.MY_KEY
+    var url = "https://tile.openweathermap.org/map/clouds_new/1/1/1.png?appid="+key;
 
-
+    $.ajax({
+      url: url, //API Call
+      dataType: "json",
+      type: "GET",
+      // data: {
+      //   q: city,
+      //   appid: key,
+      //   units: "metric",
+      //   cnt: "10"
+      // },
+      success: function (result) {
+        $("#hourTitle").empty();
+        $("#hourTitle").html("Forcast by Three Hour Intervals");
+        $("#threeHour-target").empty();
+        console.log(result);
+        
+    $("#threeHour-target").append(result);
+        
+      }
+    })//ajax
+  })//#mapSearch
 
 
 
