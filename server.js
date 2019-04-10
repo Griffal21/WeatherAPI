@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
-
+const PORT = process.env.PORT || 3000;
 // Database configuration
 var databaseUrl = "WeatherAPI";
 var collections = ["collections"];
@@ -177,6 +177,6 @@ app.get("/clearall", function(req, res) {
 });
 
 // Listen on port 3000
-app.listen(3000, function() {
+app.listen(PORT, function() {
   console.log("App running on port 3000!");
 });
