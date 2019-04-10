@@ -5,7 +5,6 @@
 
 var card = null;
 
- //FROM THE DEMO EXAMPLE
 $(document).ready(function () {
 
   $("#3search").click(function () {
@@ -30,25 +29,71 @@ $(document).ready(function () {
        // console.log(result);
         var name = result.city.name + ", " + result.city.country;
 
-        for (var i=0; i<result.list.length; i++) {
-          //console.log(result.list[i].dt_txt);
-          var a = result.list[i].dt_txt.split(' ');
-          var t = a[1].split(":");
-          var b = a[0].split("-");
-          var displayDate = b[1] + "/" + b[2] + "/" + b[0];
-          var displayTime = t[0] + ":" + t[1];
-          var disTemp = "Temperature (c): "+result.list[i].main.temp;
-          var disPress = "Pressure (mbar): "+result.list[i].main.pressure;
-          var disCond = result.list[i].weather[0].description;
-          var disHumid = "Humidity: "+result.list[i].main.humidity+"%";
-          var windCond = "Wind Speed: "+result.list[i].wind.speed +" at "+result.list[i].wind.deg;
+        $.ajax({
+          type: "GET",
+          url: "/find/city",
+          data: {
+            city: name
+          }
+        })
+        .then(function(data) {
+          console.log(data);
+        })
 
-         // console.log(result.list[i]);
-         card = `<div class="card" style="width: 22rem;"><div class="card-body"><h5 class="card-title">${name}</h5><h6 class="card-subtitle mb-2 text-muted">${displayDate + " " + displayTime}</h6><p class="card-text">${disCond}</p><p class="card-text">${disTemp}</p><p class="card-text">${disPress}</p><p class="card-text">${disHumid}</p><p class="card-text">${windCond}</p></div></div>`
-    $("#threeHour-target").append(card);
-        }//for
-      }
-    })//ajax
+        // $.ajax({
+        //   type: "POST",
+        //   dataType: "json",
+        //   url: "/submitLocation",
+        //   data: {
+        //     city: name,
+        //     created: Date.now()
+        //   }
+        // })
+        // .then(function(data) {
+        //  console.log("JJJJJJJJ");
+        // })
+
+
+
+
+
+
+    //     for (var i=0; i<result.list.length; i++) {
+    //       //console.log(result.list[i].dt_txt);
+    //       var a = result.list[i].dt_txt.split(' ');
+    //       var t = a[1].split(":");
+    //       var b = a[0].split("-");
+    //       var displayDate = b[1] + "/" + b[2] + "/" + b[0] + " " + t[0] + ":" + t[1];
+    //       var disTemp = "Temperature (c): "+result.list[i].main.temp;
+    //       var disPress = "Pressure (mbar): "+result.list[i].main.pressure;
+    //       var disCond = result.list[i].weather[0].description;
+    //       var disHumid = "Humidity: "+result.list[i].main.humidity+"%";
+    //       var windCond = "Wind Speed: "+result.list[i].wind.speed +" at "+result.list[i].wind.deg;
+
+    //      //store in database
+    //      $.ajax({
+    //        type: "POST",
+    //        dataType: "json",
+    //        url: "/submit",
+    //        data: {
+    //          city: name,
+    //          time: displayDate,
+    //          tempature: disTemp,
+    //          pressure: disPress,
+    //          condition: disCond,
+    //          humidity: disHumid,
+    //          wind: windCond,
+    //          created: Date.now()
+    //        }
+    //      })
+    //      .then(function(data) {
+    //       card = `<div class="card" style="width: 22rem;"><div class="card-body"><h5 class="card-title">${name}</h5><h6 class="card-subtitle mb-2 text-muted">${displayDate}</h6><p class="card-text">${disCond}</p><p class="card-text">${disTemp}</p><p class="card-text">${disPress}</p><p class="card-text">${disHumid}</p><p class="card-text">${windCond}</p></div></div>`
+    //       $("#threeHour-target").append(card);
+    //      })
+
+    //     }//for
+    //   }
+    // })//ajax
   })//#3search
 
 

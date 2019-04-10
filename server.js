@@ -21,8 +21,8 @@ app.use(express.json());
 app.use(express.static("public"));
 const PORT = process.env.PORT || 3000;
 // Database configuration
-var databaseUrl = "WeatherAPI";
-var collections = ["collections"];
+const databaseUrl = "WeatherAPI";
+const collections = ["collections", "locations"];
 
 // Hook mongojs config to db variable
 var db = mongojs(databaseUrl, collections);
@@ -39,6 +39,42 @@ db.on("error", function(error) {
 app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname + "./public/index.html"));
 });
+
+// Find location to avoid duplicates
+app.get("/find/city", function(req, res) {
+  db.collections.findOne(
+    {
+      city: req.params.city
+    },
+    function(error, found) {
+      if (error) {
+        console.log(error);
+        res.send(error);
+      }
+      else {
+        console.log(found);
+        res.send(found);
+      }
+    }
+  );
+});
+
+app.post("/submitLocation", function(req, res) {
+  console.log(req.body);
+  // Insert the note into the collections collection
+  db.locations.insert(req.body, function(error, saved) {
+    // Log any errors
+    if (error) {
+      console.log(error);
+    }
+    else {
+      // Otherwise, send the note back to the browser
+      // This will fire off the success function of the ajax request
+      res.send(saved);
+    }
+  });
+});
+
 
 // Handle form submission, save submission to mongo
 app.post("/submit", function(req, res) {
